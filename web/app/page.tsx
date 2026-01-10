@@ -16,6 +16,12 @@ export default function Home() {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [disclaimerAccepted, setDisclaimerAccepted] = useState(false);
+  const [threadId, setThreadId] = useState('');
+
+  useEffect(() => {
+    // Generate a random thread ID on mount
+    setThreadId(crypto.randomUUID());
+  }, []);
 
   const sendMessage = async () => {
     if (!input.trim() || isLoading) return;
@@ -26,11 +32,14 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      // TODO: Connect to backend
+      // Connect to backend with persistent thread_id
       const response = await fetch('http://localhost:8000/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ message: input })
+        body: JSON.stringify({ 
+          message: input,
+          thread_id: threadId 
+        })
       });
       const data = await response.json();
       
