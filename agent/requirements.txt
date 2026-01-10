@@ -1,0 +1,10 @@
+langgraph
+langchain
+langchain-google-genai
+langchain-mongodb
+pymongo
+voyageai
+python-dotenv
+fastapi
+uvicorn
+pydantic
