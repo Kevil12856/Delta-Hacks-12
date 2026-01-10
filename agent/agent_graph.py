@@ -16,7 +16,12 @@ class AgentState(TypedDict):
     legal_issue: str
     relevant_laws: list[str]
     draft: str
+    draft: str
     critique: str
+    
+    # Phase 2: Clarification
+    needs_clarification: bool
+    clarification_question: str
 
 # --- LLM Setup ---
 llm = ChatGoogleGenerativeAI(model="gemini-3-flash-preview", temperature=0)
@@ -46,6 +51,36 @@ def triage_node(state: AgentState):
         legal_issue = str(content)
         
     return {"legal_issue": legal_issue}
+
+def clarify_node(state: AgentState):
+    """Checks if the user input is clear enough to proceed."""
+    messages = state['messages']
+    last_message = messages[-1]
+    
+    prompt = f"""
+    You are a Legal Intake Specialist.
+    User Input: "{last_message.content}"
+    
+    Does this input contain enough specific information (e.g., Notice Type like N12, N11, N4, dates, or specific rent increase amounts) to give legal advice?
+    
+    If YES, output "CLEAR".
+    If NO (it's too vague, e.g., "my landlord is mad" or "help me"), output a specific follow-up question to ask the user.
+    """
+    response = llm.invoke(prompt)
+    content = response.content
+    
+    # Handle Gemini 3 list output
+    if isinstance(content, list):
+        text_parts = [item['text'] for item in content if isinstance(item, dict) and 'text' in item]
+        text_content = " ".join(text_parts)
+    else:
+        text_content = str(content)
+        
+    if "CLEAR" in text_content:
+        return {"needs_clarification": False}
+    else:
+        # It's a question
+        return {"needs_clarification": True, "clarification_question": text_content}
 
 def get_embeddings():
     return VoyageAIEmbeddings(model="voyage-law-2")
@@ -120,19 +155,53 @@ def drafter_node(state: AgentState):
 workflow = StateGraph(AgentState)
 
 workflow.add_node("triage", triage_node)
+workflow.add_node("clarify", clarify_node) # New Node
 workflow.add_node("research", research_node)
 workflow.add_node("drafter", drafter_node)
 
-workflow.set_entry_point("triage")
+workflow.set_entry_point("clarify") # Start by checking clarity
+
+# Conditional Edge
+def should_clarify(state: AgentState):
+    if state.get("needs_clarification"):
+        return "end_with_question"
+    return "triage"
+
+workflow.add_conditional_edges(
+    "clarify",
+    should_clarify,
+    {
+        "end_with_question": END,
+        "triage": "triage"
+    }
+)
+
 workflow.add_edge("triage", "research")
 workflow.add_edge("research", "drafter")
 workflow.add_edge("drafter", END)
 
-app = workflow.compile()
+# --- Persistence ---
+from langgraph.checkpoint.memory import MemorySaver
+memory = MemorySaver()
+
+app = workflow.compile(checkpointer=memory)
 
 if __name__ == "__main__":
-    # Test run
-    inputs = {"messages": [HumanMessage(content="My landlord gave me an N12 but I think he just wants to raise the rent.")]}
-    for output in app.stream(inputs):
+    # Test run 1: Vague
+    print("--- Test 1: Vague Input ---")
+    config = {"configurable": {"thread_id": "test-thread-1"}}
+    inputs = {"messages": [HumanMessage(content="My landlord is being mean.")]}
+    for output in app.stream(inputs, config=config):
         for key, value in output.items():
             print(f"Finished Node: {key}")
+            if key == "clarify":
+                print(f"Clarification Result: {value}")
+
+    # Test run 2: Specific
+    print("\n--- Test 2: Specific Input ---")
+    config = {"configurable": {"thread_id": "test-thread-2"}}
+    inputs = {"messages": [HumanMessage(content="I received an N12 notice for personal use.")]}
+    for output in app.stream(inputs, config=config):
+        for key, value in output.items():
+            print(f"Finished Node: {key}")
+

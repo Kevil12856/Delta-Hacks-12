@@ -20,14 +20,25 @@ app.add_middleware(
 
 class ChatRequest(BaseModel):
     message: str
-    jurisdiction: str = "ON"  # Default to Ontario
+    jurisdiction: str = "ON"
+    thread_id: str
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
     try:
         inputs = {"messages": [HumanMessage(content=request.message)]}
-        # Run the agent (for now just taking the final result, ideally we stream)
-        final_state = agent_app.invoke(inputs)
+        config = {"configurable": {"thread_id": request.thread_id}}
+        
+        # Run the agent with state persistence
+        final_state = agent_app.invoke(inputs, config=config)
+        
+        # Check for clarification
+        if final_state.get("needs_clarification"):
+            return {
+                "response": final_state.get("clarification_question"),
+                "legal_issue": "Additional Info Required",
+                "draft": None
+            }
         
         # Extract the last message content
         return {
@@ -35,6 +46,7 @@ async def chat(request: ChatRequest):
             "legal_issue": final_state.get("legal_issue"),
             "draft": final_state.get("draft")
         }
+        
     except Exception as e:
         import traceback
         traceback.print_exc()
