@@ -90,7 +90,8 @@ def orchestrator_node(state: AgentState):
         question = text_content.split("|")[-1].strip()
         return {
             "needs_clarification": True, 
-            "clarification_question": question
+            "clarification_question": question,
+            "messages": [AIMessage(content=question)]
         }
 
 def get_embeddings():
@@ -150,11 +151,17 @@ def explainer_node(state: AgentState):
     Relevant Laws: {laws}
     User Context: {messages[-1].content}
     
-    1. **Explain** the legal situation clearly to the user.
-    2. **Cite Verbatim**: Quote the specific sections of the laws provided that apply (e.g. "Section 83(1) states..."). Do not paraphrase the law itself.
-    3. **Provide Options**: specific, actionable paths forward (e.g. "Option 1: File T6", "Option 2: Negotiate").
+    YOUR GOAL: Explain the situation and provide actionable options.
     
-    RESTRICTION: Do NOT draft a full letter yet. ask the user which option they want to pursue.
+    OUTPUT FORMAT: You must output a valid JSON object. Do not wrap in markdown code blocks.
+    {{
+      "explanation": "Clear, empathetic explanation of the legal situation using Markdown (bolding, lists). Cite sections here e.g. **Section 48**.",
+      "citations": ["RTA Section 48(1)", "RTA Section 51"],
+      "options": [
+        {{ "label": "File T6 Application", "action": "file_t6", "description": "Use this if repairs are urgent." }},
+        {{ "label": "Negotiate Cash for Keys", "action": "negotiate", "description": "Ask for money to leave voluntarily." }}
+      ]
+    }}
     """
     response = llm.invoke(prompt)
     content = response.content
@@ -165,9 +172,11 @@ def explainer_node(state: AgentState):
         text_content = " ".join(text_parts)
     else:
         text_content = str(content)
+    
+    # Clean up markdown code blocks if present
+    text_content = text_content.replace("```json", "").replace("```", "").strip()
         
     ai_message = AIMessage(content=text_content)
-    # We map this to 'draft' for now so the UI picks it up without code changes
     return {"draft": text_content, "messages": [ai_message]}
 
 def drafter_node(state: AgentState):

@@ -54,6 +54,81 @@ export default function Home() {
     }
   };
 
+  interface StructuredResponse {
+    explanation: string;
+    citations?: string[];
+    options?: { label: string; action: string; description: string }[];
+  }
+
+  const renderMessageContent = (content: string) => {
+    let parsed: StructuredResponse | null = null;
+    try {
+      parsed = JSON.parse(content);
+    } catch (e) {
+      // Not JSON, render as plain markdown
+    }
+
+    if (!parsed) {
+      return (
+        <div className="prose prose-sm prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {content}
+          </ReactMarkdown>
+        </div>
+      );
+    }
+
+    return (
+      <div className="space-y-4">
+        {/* Explanation */}
+        <div className="prose prose-sm prose-slate max-w-none">
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {parsed.explanation}
+          </ReactMarkdown>
+        </div>
+
+        {/* Citations */}
+        {parsed.citations && parsed.citations.length > 0 && (
+          <div className="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600">
+            <strong className="block mb-1 text-slate-800 flex items-center gap-2">
+              <Scale className="w-3 h-3" /> Sources Cited:
+            </strong>
+            <ul className="list-disc list-inside space-y-1">
+              {parsed.citations.map((cite, i) => (
+                <li key={i}>{cite}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Options */}
+        {parsed.options && parsed.options.length > 0 && (
+          <div className="grid gap-2 mt-4">
+            {parsed.options.map((opt, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                   setInput(`I choose option: ${opt.label}`);
+                   // Optional: auto-send
+                   // sendMessage(); // We can't easily auto-send here without refactoring sendMessage to take args
+                }}
+                className="text-left group p-3 rounded-xl border border-indigo-100 bg-white hover:border-indigo-300 hover:shadow-md transition-all flex items-start gap-3"
+              >
+                <div className="mt-1 p-1.5 bg-indigo-50 text-indigo-600 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                  <Send className="w-3 h-3" />
+                </div>
+                <div>
+                  <div className="font-semibold text-slate-900 text-sm">{opt.label}</div>
+                  <div className="text-xs text-slate-500 line-clamp-1">{opt.description}</div>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <main className="flex min-h-screen flex-col bg-slate-50">
       {/* Disclaimer Modal */}
@@ -118,16 +193,7 @@ export default function Home() {
               {msg.role === 'user' ? (
                 <p className="leading-relaxed whitespace-pre-wrap">{msg.content}</p>
               ) : (
-                <div className="prose prose-sm prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-700 prose-li:text-slate-700 prose-strong:text-slate-900">
-                  <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                    {msg.content}
-                  </ReactMarkdown>
-                </div>
-              )}
-              {msg.role === 'assistant' && (
-                <div className="mt-3 pt-3 border-t border-slate-100 flex gap-4 text-xs text-slate-400">
-                  <span className="flex items-center gap-1"><FileText className="w-3 h-3" /> citing RTA 2006</span>
-                </div>
+                renderMessageContent(msg.content)
               )}
             </div>
           </div>

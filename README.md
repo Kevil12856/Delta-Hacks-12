@@ -9,6 +9,14 @@ In 2026, the legal gap is widening. Juris bridges this gap by using state-of-the
 
 ---
 
+## 📚 Full Legal Corpus (No Snippets)
+Juris indexes the **Complete Official Text** of the Residential Tenancies Acts for:
+*   **Ontario** (RTA 2006) - *Full 200-page Act*
+*   **British Columbia** (RTA 2002) - *Full Consolidated Statute*
+*   **Alberta** (RTA 2004) - *Full King's Printer Text*
+
+**No summaries. No hallucinations.** We use the raw law.
+
 ## 🏗️ Architecture: The "Agentic" Difference
 Traditional RAG just retrieves text and summarizes it. **Juris** uses an **Agentic Workflow** that mirrors how a human paralegal works:
 
@@ -83,6 +91,17 @@ To ensure we are ethical and safe, Juris enforces the following:
 ### Troubleshooting
 *   **Ingestion is Slow**: Voyage AI's free tier has a **3 RPM (Request Per Minute)** limit. The ingestion script sleeps for 25s between batches to respect this. This is normal.
 *   **API Errors**: Ensure `VOYAGE_API_KEY` and `MONGODB_URI` are correct in `.env`.
+
+---
+
+## 🚧 Current Limitations (What's Missing)
+While Juris is a powerful research tool, the current version has specific scopes:
+1.  **No Document Uploads**: Users cannot yet upload their own lease agreements (PDF/DOCX) for review.
+2.  **No "Human Handoff"**: There is no button to forward the conversation to a real lawyer yet.
+3.  **Text Only**: Visual accessibility (Voice Mode) and Multilingual (French/Spanish) support are planned for Phase 2.
+4.  **No Form Filling**: The agent advises *which* form to use (e.g., N12), but does not yet *fill out* the PDF for you.
+
+---
 
 ## 🗺️ Roadmap
 

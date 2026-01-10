@@ -14,10 +14,11 @@ COLLECTION_NAME = "legal_docs"
 INDEX_NAME = "vector_index"
 MONGODB_URI = os.getenv("MONGODB_URI")
 
+
 JURISDICTION_MAP = {
     "ontario_rta.html": "ON",
-    "bc_rta.html": "BC",
-    "alberta_rta.pdf": "AB"
+    "bc_rta_full.html": "BC",
+    "alberta_rta_full.html": "AB"
 }
 
 def get_embeddings():
@@ -72,9 +73,11 @@ if __name__ == "__main__":
     if not MONGODB_URI:
         print("CRITICAL: MONGODB_URI is missing in .env")
     else:
-        # Check if file exists, if not warn user
-        target_file = "docs/bc_rta.html"
-        if os.path.exists(target_file):
-            ingest_data(target_file)
-        else:
-            print(f"Warning: {target_file} not found.")
+        # List of files to ingest
+        target_files = ["docs/bc_rta_full.html", "docs/alberta_rta_full.html"]
+        
+        for file in target_files:
+            if os.path.exists(file):
+                 ingest_data(file)
+            else:
+                 print(f"Warning: {file} not found.")
