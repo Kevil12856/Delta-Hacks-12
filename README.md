@@ -116,6 +116,14 @@ graph TD
 
 ---
 
+## ☁️ Infrastructure & Deployment
+We utilize a **Hybrid Cloud Architecture** to ensure global low-latency and reliability:
+*   **Frontend (Vercel):** Deployed on the Edge Network, utilizing React Server Components (RSC) for lightning-fast initial load times.
+*   **Backend (Railway):** The LangGraph reasoning engine runs in a containerized **FastAPI** environment on Railway's dedicated infrastructure, ensuring consistent uptime for long-running agent threads.
+*   **Data Layer (MongoDB Atlas):** A dedicated M0 Sandbox cluster (upgradable to M10 Dedicated) hosting our 16k+ vector shards.
+
+---
+
 ## 🔮 Future Roadmap
 1.  **"Saul Goodman" Mode (Beta):** A dedicated fine-tuned model for creative, loophole-focused legal strategies (Strictly Educational).
 2.  **Voice Interaction:** Real-time telephony support for "Call my Lawyer" functionality.
