@@ -101,7 +101,13 @@ llm = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0)
 # --- Helpers ---
 def get_db_connection():
     try:
-        client = MongoClient(os.getenv("MONGODB_URI"), tlsCAFile=certifi.where())
+        # Explicitly configure SSL for Railway/Linux environments
+        client = MongoClient(
+            os.getenv("MONGODB_URI"), 
+            tls=True,
+            tlsCAFile=certifi.where(),
+            serverSelectionTimeoutMS=5000
+        )
         return client["juris_db"]["legal_docs"]
     except Exception as e:
         print(f"DB Connection Error: {e}")
