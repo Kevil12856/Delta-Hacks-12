@@ -1,8 +1,8 @@
 import os
 from langchain_community.document_loaders import PyPDFLoader, BSHTMLLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_mongodb import MongoDBAtlasVectorSearch
-from langchain_voyageai import VoyageAIEmbeddings
 from pymongo import MongoClient
 from dotenv import load_dotenv
 
@@ -22,8 +22,8 @@ JURISDICTION_MAP = {
 }
 
 def get_embeddings():
-    print("Using Voyage AI Embeddings (Legal Optimized) - Full Speed Results 🚀")
-    return VoyageAIEmbeddings(model="voyage-law-2") 
+    print("Using Google Gemini Embeddings (text-embedding-004) 🧠")
+    return GoogleGenerativeAIEmbeddings(model="models/text-embedding-004")
 
 def ingest_data(file_path):
     print(f"--- Starting Ingestion for {file_path} ---")
@@ -73,8 +73,13 @@ if __name__ == "__main__":
     if not MONGODB_URI:
         print("CRITICAL: MONGODB_URI is missing in .env")
     else:
+        # Wipe existing data to prevent dimension mismatch
+        print("⚠ Wiping existing collection to prevent vector dimension mismatch...")
+        MongoClient(MONGODB_URI)[DB_NAME][COLLECTION_NAME].delete_many({})
+        print("Collection cleared.")
+
         # List of files to ingest
-        target_files = ["docs/bc_rta_full.html", "docs/alberta_rta_full.html"]
+        target_files = ["docs/ontario_rta.html", "docs/bc_rta_full.html", "docs/alberta_rta_full.html"]
         
         for file in target_files:
             if os.path.exists(file):
