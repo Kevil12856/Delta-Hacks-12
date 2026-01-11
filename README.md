@@ -1,9 +1,16 @@
 # Mike Ross AI: The Agentic Legal Associate
 
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg) 
+![Status: Active](https://img.shields.io/badge/Status-Active-success.svg)
+![Python: 3.11](https://img.shields.io/badge/Python-3.11-blue.svg)
+![Framework: LangGraph](https://img.shields.io/badge/Framework-LangGraph-orange.svg)
+
 > **"I don't play the odds, I play the man... and the library."**
 > *The AI Division of Pearson Specter Litt V2*
 
 ![Office View](web/public/hero-bg.png)
+
+### 🔴 [Live Demo: https://mike-ross.ca](https://mike-ross.ca)
 
 ---
 
@@ -109,7 +116,14 @@ graph TD
 
 ---
 
-## The Partners
+## 🔮 Future Roadmap
+1.  **"Saul Goodman" Mode (Beta):** A dedicated fine-tuned model for creative, loophole-focused legal strategies (Strictly Educational).
+2.  **Voice Interaction:** Real-time telephony support for "Call my Lawyer" functionality.
+3.  **DocuSign Integration:** Auto-filling the retrieved PDF forms within the application.
+
+---
+
+## 👥 The Partners
 **Suleyman Kiani** | *Senior Name Partner*
 *   **Role:** Full Stack Engineering & System Architecture
 *   **Credentials:** BASc Honours Computer Science, M.Eng Computing & Software (McMaster University)
@@ -121,6 +135,9 @@ graph TD
 *   [LinkedIn](https://www.linkedin.com/in/karim-elbasiouni2/) | [GitHub](https://github.com/KarimElbasiouni)
 
 ---
+
+## License
+Distributed under the MIT License. See `LICENSE` for more information.
 
 > *"The only time success comes before work is in the dictionary."* — Harvey Specter
 
