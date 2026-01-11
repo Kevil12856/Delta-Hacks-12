@@ -15,10 +15,15 @@ INDEX_NAME = "vector_index"
 MONGODB_URI = os.getenv("MONGODB_URI")
 
 
+
 JURISDICTION_MAP = {
     "ontario_rta.html": "ON",
     "bc_rta_full.html": "BC",
-    "alberta_rta_full.html": "AB"
+    "alberta_rta_full.html": "AB",
+    "divorce_act.xml": "FEDERAL",
+    "criminal_code.xml": "FEDERAL",
+    "income_tax.xml": "FEDERAL",
+    "excise_tax.xml": "FEDERAL"
 }
 
 def get_embeddings():
@@ -33,7 +38,8 @@ def ingest_data(file_path):
         return
 
     # Load
-    if file_path.endswith(".html"):
+    if file_path.endswith(".html") or file_path.endswith(".xml"):
+        # BSHTMLLoader works well for XML too
         loader = BSHTMLLoader(file_path)
     else:
         loader = PyPDFLoader(file_path)
@@ -79,7 +85,15 @@ if __name__ == "__main__":
         print("Collection cleared.")
 
         # List of files to ingest
-        target_files = ["docs/ontario_rta.html", "docs/bc_rta_full.html", "docs/alberta_rta_full.html"]
+        target_files = [
+            "docs/ontario_rta.html", 
+            "docs/bc_rta_full.html", 
+            "docs/alberta_rta_full.html",
+            "docs/divorce_act.xml",
+            "docs/criminal_code.xml",
+            "docs/income_tax.xml",
+            "docs/excise_tax.xml"
+        ]
         
         for file in target_files:
             if os.path.exists(file):

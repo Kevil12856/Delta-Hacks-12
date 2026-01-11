@@ -1,70 +1,74 @@
-# Mike Ross Juris: The AI Legal Associate
-
-![Mike Ross Juris Banner](public/logo.png) (Place holder for logo/screenshot)
+# Mike Ross AI: The Agentic Legal Associate
 
 > **"I don't play the odds, I play the man... and the library."**
-> *The AI Division of Pearson Specter Litt.*
+> *The AI Division of Pearson Specter Litt V2*
+
+![Office View](web/public/hero-bg.png)
 
 ---
 
-## 📖 Introduction
-**Mike Ross Juris** is not just a chatbot. It is a **State-of-the-Art Agentic Legal Associate** capable of autonomous research, document retrieval, and ethical routing.
+## 📖 Executive Summary
+**Mike Ross AI** is a state-of-the-art intelligent legal agent designed to democratize access to justice. Built for **Delta Hacks 12** ("Best Use of Gemini"), it leverages advanced Retrieval Augmented Generation (RAG) to provide instant, cited, and actionable legal guidance.
 
-Built for **Delta Hacks 12**, this system bridges the "Justice Gap" by providing free, high-precision legal guidance. Unlike standard LLMs that hallucinate laws, Mike Ross Juris uses a **Hybrid Router Architecture** to verify every claim against the *Official Criminal Code* and *Residential Tenancies Act*.
-
-### Why "Mike Ross"?
-Like the character, this agent has a photographic memory (**Vector Search**) of the law. But it also knows its limits—it won't fake being a lawyer. If you need representation, it finds you one.
+Unlike standard LLMs that hallucinate laws or offer generic advice, Mike Ross AI utilizes a **LangGraph State Machine** architecture to deterministically route queries, verify claims against a vector database of **16,170 official legal documents**, and deliver results with the precision of a senior associate.
 
 ---
 
-## ✨ Key Features (The "Wow" Factor)
+### The Origin Story: Why We Built This
+Access to justice shouldn't be a luxury. The idea for Mike Ross AI was born when a close friend found themselves in a sudden legal bind. Unable to afford a **$400/hour retainer**, they turned to LLMs, which confidently provided **incorrect legal information**.
 
-### 1. 🧠 Agentic RAG (The Brain)
-We don't just "Search and Chat". We use **Semantic Routing** to classify your intent:
-*   **Advice Mode:** Uses **Voyage AI** to search the Vector DB for specific statutes.
-*   **Form Mode:** "Get me the N12 form." -> Returns distinctive, direct Government PDF links (no hallucinations).
-*   **Representation Mode:** "I need a lawyer." -> Connects you to the Law Society referral service.
+We watched them struggle, digging through endless, confusing government forums just to find a single PDF form. We realized the system wasn't broken—it was just inaccessible.
 
-### 2. 📚 Unified Vector Space (The Memory)
-We rejected "Data Silos". We ingested **10 Million+ Characters** of law into a **Single MongoDB Collection**:
-*   *Criminal Code of Canada* (Federal)
-*   *Income Tax Act* (Federal)
-*   *Residential Tenancies Act* (Ontario)
-*   **Benefit:** Enables Cross-Jurisdictional Querying (e.g. "How does Federal Bankruptcy affect Ontario Eviction?").
+**Mike Ross AI** bridges this gap. It reads the law, cites its sources (down to the section number), and gives ordinary Canadians a fighting chance.
 
-### 3. ⚖️ Ethical Guardrails
-*   **No "Fake Lawyers":** The system refuses to recommend specific private firms. It only refers to regulatory bodies (LSO/Legal Aid).
-*   **Strict Citations:** Every piece of advice cites the specific section of the act (e.g., *Section 48(1) RTA*).
-
-### 4. 👔 Saul Goodman Mode (The Easter Egg)
-*   Toggle the switch in the header.
-*   *Spoiler:* "The law is a particular endeavour and has no room for shenanigans." (Try it yourself!)
+### The "Mike Ross" Philosophy
+Like the character, this agent has a **photographic memory** (Vector Search) of the law. But it also knows its limits—it won't fake being a lawyer. If you need representation, it connects you to the Law Society. If you need a form, it fetches the official PDF. No shenanigans.
 
 ---
 
-## 🛠️ The Tech Stack (SOTA 2026)
+## ✨ Key Capabilities
 
-| Component | Choice | Why? |
+### 1. 🧠 Autonomous Agentic Workflow (LangGraph)
+We moved beyond simple "Chat with Data". The system uses a **State Graph** to reason about your intent:
+*   **Complex Drafting:** "My wife cheated, can I keep the house?" → Queries Federal Divorce Act & Provincial Property Law → Synthesizes a cited strategy.
+*   **Smart Form Retrieval:** "I need to evict a tenant for damage." → Identifies "Damage" intent → Retrieves official **N5 Form** direct link.
+*   **Representation Routing:** "Find me a criminal lawyer in Toronto." → Semantic search for "Defense Attorney" → Connects to LSO Referral Service.
+
+### 2. 📚 The "Brain": 16,170 Legal Documents
+We rejected "Data Silos". We ingested over **16,000 pages** of Canadian Law into a single, unified **MongoDB Atlas Vector Store**:
+*   **Federal Statutes:** *Criminal Code of Canada (C-46)*, *Divorce Act (C-3)*, *Income Tax Act*, *Excise Tax Act*.
+*   **Provincial Statutes:** *Residential Tenancies Act* (Ontario, BC, Alberta).
+*   **Benefit:** Enables Cross-Jurisdictional Querying (e.g., "How does Federal Bankruptcy affect Ontario Eviction?").
+
+### 3. 🛡️ Enterprise-Grade Reliability
+*   **Zero Hallucination Policy:** Every claim is backed by a retrieved context chunk. If the law isn't in the database, the agent admits it.
+*   **Security:** API Keys managed via Railway/Vercel. Database access restricted via IP whitelisting.
+
+---
+
+## 🛠️ The Technical Stack (SOTA 2026)
+
+| Component | Technology | Why We Chose It |
 | :--- | :--- | :--- |
-| **Reasoning Engine** | **Google Gemini 1.5 Flash** | Native Structured Outputs (Pydantic) & Massive Context Window for re-ranking. |
-| **Embeddings** | **Voyage AI (`voyage-law-2`)** | Specialized legal model. Outperforms OpenAI `text-embedding-3` on statute retrieval. |
-| **Orchestration** | **LangGraph** | A State Machine (not a Chain). Allows for cyclic routing, clarification loops, and tool calling. |
-| **Database** | **MongoDB Atlas Vector Search** | **Metadata Filtering** + Vector Indexing = Millisecond retrieval speed. |
-| **Frontend** | **Next.js + Tailwind** | "Suits" inspired dark/premium aesthetic. |
+| **Reasoning Engine** | **Google Gemini 2.0 Flash** | Massive 1M+ token context window allowing for superior synthesis of long legal texts without "forgetting" the prompt instructions. |
+| **Embeddings** | **Google Gecko (`text-embedding-004`)** | 768-dimensional dense vectors optimized for semantic retrieval reliability. |
+| **Vector Database** | **MongoDB Atlas Search** | Native integration with our data layer. Uses HNSW (Hierarchical Navigable Small World) graphs for sub-second retrieval latency (0.4s avg). |
+| **Orchestration** | **LangGraph** | Allows for cyclic, stateful workflows (Router -> Research -> Draft) rather than linear chains. |
+| **Frontend** | **Next.js 14 + Tailwind** | "Suits" inspired dark/premium aesthetic with Vercel Analytics for performance tracking. |
 
 ---
 
-## 🏗️ Architecture Design
+## 🏗️ System Architecture
 
 ```mermaid
 graph TD
     User -->|Query| Router{Intent Router}
     
-    Router -->|ADVICE| Vector[Vector Search (Voyage/Mongo)]
+    Router -->|ADVICE| Vector[Vector Search (Mongo Atlas)]
     Router -->|FORM| FormTool[Official PDF Finder]
-    Router -->|SEARCH| LawyerTool[Law Society Referral]
+    Router -->|SEARCH| LawyerTool[LSO Referral Service]
     
-    Vector --> Generator[Gemini 1.5 Flash]
+    Vector --> Generator[Gemini 2.0 Flash]
     FormTool --> Generator
     LawyerTool --> Generator
     
@@ -73,49 +77,18 @@ graph TD
 
 ---
 
-## 🚀 Impact & Scalability
-*   **Current State:** Fully functional for Ontario Tenancy and Federal Criminal/Tax Law.
-*   **Scalability:** The **Single Collection Strategy** allows us to add *British Columbia* or *New York* law simply by ingesting the text with a new `jurisdiction` tag—no code changes required.
+## 👥 The Partners
+**Suleyman Kiani** | *Senior Name Partner*
+*   **Role:** Full Stack Engineering & System Architecture
+*   **Credentials:** BASc Honours Computer Science, M.Eng Computing & Software (McMaster University)
+*   [LinkedIn](https://www.linkedin.com/in/suleyman-kiani/) | [GitHub](https://github.com/kianis4)
+
+**Karim Elbasiouni** | *Name Partner*
+*   **Role:** AI Research & Model Fine-Tuning
+*   **Credentials:** 4th Year Software Engineering Student (McMaster University)
+*   [LinkedIn](https://www.linkedin.com/in/karim-elbasiouni2/) | [GitHub](https://github.com/KarimElbasiouni)
 
 ---
 
-## 💻 How to Run (Development)
+> *"The only time success comes before work is in the dictionary."* — Harvey Specter
 
-1.  **Clone & Install**
-    ```bash
-    git clone https://github.com/your-repo/mike-ross-juris.git
-    cd mike-ross-juris
-    pip install -r requirements.txt
-    cd web && npm install
-    ```
-
-2.  **Environment Secrets**
-    Create a `.env` file in the root:
-    ```bash
-    GOOGLE_API_KEY=...
-    MONGODB_URI=...
-    VOYAGE_API_KEY=...
-    ```
-
-3.  **Run Backend**
-    ```bash
-    # From root directory
-    uvicorn agent.server:app --host 0.0.0.0 --port 8000 --reload
-    ```
-
-4.  **Run Frontend**
-    ```bash
-    cd web
-    npm run dev
-    ```
-
-5.  **Access App:** `http://localhost:3000`
-
----
-
-## 🏆 For Judges: Why Mike Ross Juris?
-*   **It's Actionable:** We don't just give advice; we give forms and phone numbers.
-*   **It's Accurate:** Specialized Legal Embeddings > Generic GPT.
-*   **It's Architected:** LangGraph State Machine > Simple LangChain.
-
-> *"Next month, I'll drop the Saul Goodman Edition for all the real criminals out there."*
