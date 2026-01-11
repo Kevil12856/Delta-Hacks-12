@@ -1,9 +1,17 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
+import os
+import uuid
 try:
     from agent.agent_graph import app as agent_app
+    from agent.pdf_service import generate_legal_pdf
 except ImportError:
-    from agent_graph import app as agent_app
+    # Fallback if running directly or path issues
+    import sys
+    sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    from agent.agent_graph import app as agent_app
+    from agent.pdf_service import generate_legal_pdf
 from langchain_core.messages import HumanMessage
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -37,17 +45,21 @@ async def chat(request: ChatRequest):
         
         # Check for clarification
         if final_state.get("needs_clarification"):
+            # Use the actual message content (JSON) instead of the plain text summary
+            last_msg_content = final_state["messages"][-1].content
             return {
-                "response": final_state.get("clarification_question"),
+                "response": last_msg_content,
                 "legal_issue": "Additional Info Required",
-                "draft": None
+                "draft": None,
+                "debug_info": final_state.get("debug_logs", [])
             }
         
         # Extract the last message content
         return {
             "response": final_state["messages"][-1].content,
             "legal_issue": final_state.get("legal_issue"),
-            "draft": final_state.get("draft")
+            "draft": final_state.get("draft"),
+            "debug_info": final_state.get("debug_logs", [])
         }
         
     except Exception as e:
@@ -58,6 +70,21 @@ async def chat(request: ChatRequest):
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+class PDFRequest(BaseModel):
+    text: str
+
+@app.post("/generate-pdf")
+async def generate_pdf(request: PDFRequest):
+    try:
+        filename = f"draft_{uuid.uuid4()}.pdf"
+        filepath = os.path.join(os.getcwd(), filename)
+        
+        generate_legal_pdf(request.text, filepath)
+        
+        return FileResponse(filepath, media_type='application/pdf', filename="Legal_Notice_Draft.pdf")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
     import uvicorn

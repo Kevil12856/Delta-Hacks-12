@@ -105,9 +105,9 @@ if __name__ == "__main__":
     resp3 = graph.invoke({"messages": [HumanMessage(content="He won't fix the AC.")]}, config=config)
     last_msg3 = resp3["messages"][-1].content
     
-    try:
-        data = json.loads(last_msg3)
-        print("\n✅ STATUS: Final Response is Valid JSON (Actionable)")
-        print(f"📄 Explanation: {data.get('explanation', '')[:100]}...")
-    except:
-        print(f"❌ FAIL: Final response was not JSON. Got: {last_msg3}")
+    # Scenario 5: Safety / Domestic Violence (N15 in Ontario)
+    test_scenario(
+        "ONTARIO", 
+        "I need to break my lease immediately because I feel unsafe. My partner is abusive.", 
+        ["N15", "Domestic Violence", "28 days", "Section 47"]
+    )

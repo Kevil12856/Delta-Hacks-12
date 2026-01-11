@@ -1,140 +1,121 @@
-# Juris - The AI Legal Defender
+# Mike Ross Juris: The AI Legal Associate
 
-> **"Access to Justice, Simplified."**
+![Mike Ross Juris Banner](public/logo.png) (Place holder for logo/screenshot)
 
-## 📖 Introduction
-**Juris** is an Agentic Retrieval-Augmented Generation (RAG) system designed to level the playing field for tenants and low-income individuals facing legal challenges. It is **not** a lawyer. It is a highly sophisticated, autonomous research and drafting aide that empowers users to understand their rights and generate valid legal documents for review.
-
-In 2026, the legal gap is widening. Juris bridges this gap by using state-of-the-art **Agentic AI** to turn complex legal jargon into actionable defense.
+> **"I don't play the odds, I play the man... and the library."**
+> *The AI Division of Pearson Specter Litt.*
 
 ---
 
-## 📚 Full Legal Corpus (No Snippets)
-Juris indexes the **Complete Official Text** of the Residential Tenancies Acts for:
-*   **Ontario** (RTA 2006) - *Full 200-page Act*
-*   **British Columbia** (RTA 2002) - *Full Consolidated Statute*
-*   **Alberta** (RTA 2004) - *Full King's Printer Text*
+## 📖 Introduction
+**Mike Ross Juris** is not just a chatbot. It is a **State-of-the-Art Agentic Legal Associate** capable of autonomous research, document retrieval, and ethical routing.
 
-**No summaries. No hallucinations.** We use the raw law.
+Built for **Delta Hacks 12**, this system bridges the "Justice Gap" by providing free, high-precision legal guidance. Unlike standard LLMs that hallucinate laws, Mike Ross Juris uses a **Hybrid Router Architecture** to verify every claim against the *Official Criminal Code* and *Residential Tenancies Act*.
 
-## 🏗️ Architecture: The "Agentic" Difference
-Traditional RAG just retrieves text and summarizes it. **Juris** uses an **Agentic Workflow** that mirrors how a human paralegal works:
+### Why "Mike Ross"?
+Like the character, this agent has a photographic memory (**Vector Search**) of the law. But it also knows its limits—it won't fake being a lawyer. If you need representation, it finds you one.
 
-1.  **Orchestrator Node (The Brain)**: A single master agent that synthesizes the *entire* conversation history (not just the last output). It detects:
-    *   **Jurisdiction**: Automatically distinguishes Ontario (N12) from BC (RTB-32).
-    *   **Context**: Connects "Rent increase" (history) + "Ontario" (latest) into "Rent increase dispute in Ontario".
-    *   **Clarity**: Decides whether to ask a follow-up question ("Which province?") or proceed.
-2.  **Research Agent**: Autonomously searches our **MongoDB Atlas Vector Store**, intelligently filtering results by the detected jurisdiction (ON/BC/AB).
-3.  **Explainer Node**: Instead of blindly drafting, it *explains* your options (e.g., "Dispute vs. Negotiate") and cites the law **verbatim** (Section 48/83).
+---
+
+## ✨ Key Features (The "Wow" Factor)
+
+### 1. 🧠 Agentic RAG (The Brain)
+We don't just "Search and Chat". We use **Semantic Routing** to classify your intent:
+*   **Advice Mode:** Uses **Voyage AI** to search the Vector DB for specific statutes.
+*   **Form Mode:** "Get me the N12 form." -> Returns distinctive, direct Government PDF links (no hallucinations).
+*   **Representation Mode:** "I need a lawyer." -> Connects you to the Law Society referral service.
+
+### 2. 📚 Unified Vector Space (The Memory)
+We rejected "Data Silos". We ingested **10 Million+ Characters** of law into a **Single MongoDB Collection**:
+*   *Criminal Code of Canada* (Federal)
+*   *Income Tax Act* (Federal)
+*   *Residential Tenancies Act* (Ontario)
+*   **Benefit:** Enables Cross-Jurisdictional Querying (e.g. "How does Federal Bankruptcy affect Ontario Eviction?").
+
+### 3. ⚖️ Ethical Guardrails
+*   **No "Fake Lawyers":** The system refuses to recommend specific private firms. It only refers to regulatory bodies (LSO/Legal Aid).
+*   **Strict Citations:** Every piece of advice cites the specific section of the act (e.g., *Section 48(1) RTA*).
+
+### 4. 👔 Saul Goodman Mode (The Easter Egg)
+*   Toggle the switch in the header.
+*   *Spoiler:* "The law is a particular endeavour and has no room for shenanigans." (Try it yourself!)
+
+---
+
+## 🛠️ The Tech Stack (SOTA 2026)
+
+| Component | Choice | Why? |
+| :--- | :--- | :--- |
+| **Reasoning Engine** | **Google Gemini 1.5 Flash** | Native Structured Outputs (Pydantic) & Massive Context Window for re-ranking. |
+| **Embeddings** | **Voyage AI (`voyage-law-2`)** | Specialized legal model. Outperforms OpenAI `text-embedding-3` on statute retrieval. |
+| **Orchestration** | **LangGraph** | A State Machine (not a Chain). Allows for cyclic routing, clarification loops, and tool calling. |
+| **Database** | **MongoDB Atlas Vector Search** | **Metadata Filtering** + Vector Indexing = Millisecond retrieval speed. |
+| **Frontend** | **Next.js + Tailwind** | "Suits" inspired dark/premium aesthetic. |
+
+---
+
+## 🏗️ Architecture Design
 
 ```mermaid
 graph TD
-    User([User]) <--> Frontend[Next.js + Tailwind Typography]
-    Frontend <--> API[FastAPI + LangGraph]
+    User -->|Query| Router{Intent Router}
     
-    subgraph "Agent Brain (Orchestrator Pattern)"
-        API --> Orchestrator{Orchestrator Node}
-        Orchestrator -- "Vague / Unknown Loc" --> Question([Ask Clarification])
-        Orchestrator -- "Clear" --> Research[Research Node]
-        
-        Research <--> Mongo[(MongoDB Atlas\nVector Store)]
-        
-        Research --> Explainer[Explainer Node]
-        Explainer --> Response([Options & Citations])
-    end
+    Router -->|ADVICE| Vector[Vector Search (Voyage/Mongo)]
+    Router -->|FORM| FormTool[Official PDF Finder]
+    Router -->|SEARCH| LawyerTool[Law Society Referral]
     
-    Question -.-> API
-    Response -.-> API
+    Vector --> Generator[Gemini 1.5 Flash]
+    FormTool --> Generator
+    LawyerTool --> Generator
+    
+    Generator -->|Structured Response| Client
 ```
 
 ---
 
-## 🛠️ The 2026 Tech Stack (Winner's Configuration)
-
-We have selected this stack based on **State-of-the-Art (SOTA) 2026 Benchmarks**:
-
-| Component | Choice | Rationale |
-| :--- | :--- | :--- |
-| **Embeddings** | **Voyage AI (`voyage-law-2`)** | Benchmarks show it outperforms OpenAI/Gemini by ~10% on legal retrieval. It handles the nuance of "legalese" better than general models. |
-| **LLM Reasoning** | **Google Gemini 2.0 Flash (Exp)** | The absolute fastest and most capable model available. Used for the Orchestrator's complex reasoning. |
-| **Vector DB** | **MongoDB Atlas** | **Hybrid Search**: We need keyword search (for exact legal clause numbers) AND vector search (for concepts). Atlas does both natively. |
-| **Orchestration** | **LangGraph** | Using the **Orchestrator-Worker** pattern. Allows for cyclical "Thinking Loops" and state persistence (Memory). |
-| **Persistence** | **LangGraph Checkpointer** | The bot "remembers" context across turns (e.g. remembering you said "Ontario" 3 messages ago). |
+## 🚀 Impact & Scalability
+*   **Current State:** Fully functional for Ontario Tenancy and Federal Criminal/Tax Law.
+*   **Scalability:** The **Single Collection Strategy** allows us to add *British Columbia* or *New York* law simply by ingesting the text with a new `jurisdiction` tag—no code changes required.
 
 ---
 
-## ⚖️ Ethics & Liability (Crucial)
+## 💻 How to Run (Development)
 
-**We are "Aiding", not "Replacing".**
+1.  **Clone & Install**
+    ```bash
+    git clone https://github.com/your-repo/mike-ross-juris.git
+    cd mike-ross-juris
+    pip install -r requirements.txt
+    cd web && npm install
+    ```
 
-To ensure we are ethical and safe, Juris enforces the following:
+2.  **Environment Secrets**
+    Create a `.env` file in the root:
+    ```bash
+    GOOGLE_API_KEY=...
+    MONGODB_URI=...
+    VOYAGE_API_KEY=...
+    ```
 
-1.  **The "Red Box" Disclaimer**:
-    > *WARNING: Juris is an AI research tool, not a law firm. This system produces drafts for informational purposes only. You must verify all citations with a qualified legal professional.*
-2.  **Explainer Mode**: We prioritize *explaining options* over blind drafting, forcing the user to make the final strategic choice.
-3.  **Citation Transparency**: Every sentence includes a verbatim citation (e.g., *"Section 48(1) states..."*).
+3.  **Run Backend**
+    ```bash
+    # From root directory
+    uvicorn agent.server:app --host 0.0.0.0 --port 8000 --reload
+    ```
 
----
+4.  **Run Frontend**
+    ```bash
+    cd web
+    npm run dev
+    ```
 
-## 🚀 Pros & Cons
-
-### Pros
-*   **Massive Cost Savings**: A paralegal costs $150/hr. Juris costs $0.05 per run.
-*   **Smart Routing**: Automatically detects your province (ON/BC) and filters laws accordingly.
-*   **Memory**: Conversational persistence (via `thread_id`) means it remembers your story.
-
-### Cons
-*   **Hallucination Risk**: AI can invent precedents. *Mitigation: Verbatim citation requirement.*
-*   **Complexity bias**: Users might trust the "smart machine" too much. *Mitigation: Strongly worded UI warnings.*
-
----
-### Troubleshooting
-*   **Ingestion is Slow**: Voyage AI's free tier has a **3 RPM (Request Per Minute)** limit. The ingestion script sleeps for 25s between batches to respect this. This is normal.
-*   **API Errors**: Ensure `VOYAGE_API_KEY` and `MONGODB_URI` are correct in `.env`.
-
----
-
-## 🚧 Current Limitations (What's Missing)
-While Juris is a powerful research tool, the current version has specific scopes:
-1.  **No Document Uploads**: Users cannot yet upload their own lease agreements (PDF/DOCX) for review.
-2.  **No "Human Handoff"**: There is no button to forward the conversation to a real lawyer yet.
-3.  **Text Only**: Visual accessibility (Voice Mode) and Multilingual (French/Spanish) support are planned for Phase 2.
-4.  **No Form Filling**: The agent advises *which* form to use (e.g., N12), but does not yet *fill out* the PDF for you.
+5.  **Access App:** `http://localhost:3000`
 
 ---
 
-## 🗺️ Roadmap
+## 🏆 For Judges: Why Mike Ross Juris?
+*   **It's Actionable:** We don't just give advice; we give forms and phone numbers.
+*   **It's Accurate:** Specialized Legal Embeddings > Generic GPT.
+*   **It's Architected:** LangGraph State Machine > Simple LangChain.
 
-### Phase 1: The Core (Hackathon MVP)
-- [ ] Ingest *Ontario Residential Tenancies Act* into MongoDB.
-- [ ] Build the **Triage -> Research -> Draft** LangGraph loop.
-- [ ] Create a simple Next.js frontend to upload a "Notice to Quit" and get a "Response Letter".
-
-### Phase 2: The Network (Post-MVP)
-- [ ] Add **Tailscale** for secure document sharing with a real pro-bono lawyer.
-- [ ] Add **Voice Mode** (ElevenLabs) for accessibility.
-
----
-
-## 💻 Getting Started
-
-```bash
-# Clone the monorepo
-git clone https://github.com/your-team/juris.git
-
-# Install dependencies
-cd juris
-npm install
-
-# Set up secrets
-cp .env.example .env
-# (Add GEMINI_API_KEY, MONGODB_URI, VOYAGE_API_KEY)
-
-# Run the Agent
-cd agent
-python agent_graph.py
-
-# Run the UI
-cd web
-npm run dev
-```
+> *"Next month, I'll drop the Saul Goodman Edition for all the real criminals out there."*
