@@ -171,24 +171,62 @@ export default function LandingPage() {
           </div>
       </section>
 
-      {/* Team / The Name Partners */}
-      <section className="py-32 bg-[#050A18] border-t border-white/5 text-center">
+      {/* The Origin Story */}
+      <section className="py-32 relative text-center border-t border-white/5 bg-[#050A18]/90 backdrop-blur-sm">
         <div className="max-w-4xl mx-auto px-6">
-            <h2 className="text-4xl font-serif mb-16">The Name Partners</h2>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 border border-slate-700 rounded-full text-slate-400 text-xs font-bold uppercase tracking-widest mb-10">
+                <Shield className="w-3 h-3" />
+                <span>The Origin</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-5xl font-serif text-white mb-8">Access to Justice shouldn't be a luxury.</h2>
+            
+            <div className="text-lg text-slate-400 leading-relaxed space-y-8 font-light italic">
+                <p>
+                    "It started when a close friend found themself in a legal bind. They couldn't afford $400/hour for a retainer, so they turned to ChatGPT. 
+                    <span className="text-red-400/80"> It gave them wrong information.</span>"
+                </p>
+                <p>
+                   "We watched them struggle, digging through endless, confusing government forums just to find a single form. We realized the system wasn't broken—it was just inaccessible."
+                </p>
+                <p>
+                    "That's why we built Mike Ross. An AI that doesn't guess. It reads the law, cites its sources, and gives you the fighting chance you deserve. Because everyone deserves a good defense."
+                </p>
+            </div>
+            
+            <div className="mt-16 p-8 border border-white/10 bg-white/5 rounded-2xl max-w-2xl mx-auto backdrop-blur-md">
+                 <h3 className="text-xl font-bold text-white mb-2">Why "Mike Ross"?</h3>
+                 <p className="text-slate-400 text-sm leading-relaxed">
+                    Like the character, this agent has a <b>photographic memory</b> of the law. 
+                    But unlike a hallucinating chatbot, it knows its limits. It won't fake being a lawyer. 
+                    Reference the law, find the form, or find a professional. No shenanigans.
+                 </p>
+            </div>
+        </div>
+      </section>
+
+      {/* Team / The Name Partners */}
+      <section className="py-32 bg-[#050A18]/95 border-t border-white/5 text-center relative z-10">
+        <div className="max-w-6xl mx-auto px-6">
+            <h2 className="text-4xl font-serif mb-20 text-white">The Name Partners</h2>
             
             <div className="flex flex-col md:flex-row justify-center gap-20">
                 <PartnerCard 
                     initials="SK"
                     name="Suleyman Kiani"
-                    title="Senior Partner • Engineering"
-                    link="https://www.linkedin.com/in/suleymankiani/"
+                    role="Senior Partner • Engineering"
+                    creds="BASc Honours CS, M.Eng Computing & Software • McMaster University"
+                    link="https://www.linkedin.com/in/suleyman-kiani/"
+                    github="https://github.com/kianis4"
                 />
-                <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+                <div className="hidden md:block w-px bg-gradient-to-b from-transparent via-white/10 to-transparent" />
                 <PartnerCard 
                     initials="KE"
                     name="Karim Elbasiouni"
-                    title="Name Partner • AI Research"
-                    link="https://www.linkedin.com/in/karim-elbasiouni/"
+                    role="Name Partner • AI Research"
+                    creds="4th Year Software Engineering • McMaster University"
+                    link="https://www.linkedin.com/in/karim-elbasiouni2/"
+                     github="https://github.com/KarimElbasiouni"
                 />
             </div>
         </div>
@@ -253,15 +291,21 @@ function PracticeMetric({ number, title, desc }: any) {
     )
 }
 
-function PartnerCard({ initials, name, title, link }: any) {
+function PartnerCard({ initials, name, role, creds, link, github }: any) {
     return (
-        <a href={link} target="_blank" className="text-center group cursor-pointer">
-            <div className="w-32 h-32 mx-auto bg-[#0A1025] border border-white/10 flex items-center justify-center mb-6 group-hover:border-[#C5A065] transition-all duration-500 relative overflow-hidden">
+        <a href={link} target="_blank" className="text-center group cursor-pointer block max-w-sm mx-auto">
+            <div className="w-32 h-32 mx-auto bg-[#0A1025] border border-white/10 flex items-center justify-center mb-6 group-hover:border-[#C5A065] transition-all duration-500 relative overflow-hidden rounded-sm">
                 <div className="absolute inset-0 bg-[#C5A065] transform translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-in-out opacity-10" />
-                <span className="text-4xl font-serif text-slate-600 group-hover:text-white transition-colors">{initials}</span>
+                <span className="text-4xl font-serif text-slate-400 group-hover:text-white transition-colors">{initials}</span>
             </div>
-            <h3 className="text-xl font-bold text-white group-hover:text-[#C5A065] transition-colors">{name}</h3>
-            <p className="text-xs text-slate-500 uppercase tracking-widest mt-2">{title}</p>
+            <h3 className="text-2xl font-serif text-white group-hover:text-[#C5A065] transition-colors mb-2">{name}</h3>
+            <div className="text-xs text-[#C5A065] uppercase tracking-widest font-bold mb-3">{role}</div>
+            <p className="text-sm text-slate-400 font-light mb-4 px-4">{creds}</p>
+            {github && (
+                 <div className="inline-flex items-center gap-1 text-slate-600 group-hover:text-slate-400 text-xs uppercase tracking-widest">
+                    <span>View Github</span>
+                 </div>
+            )}
         </a>
     )
 }
