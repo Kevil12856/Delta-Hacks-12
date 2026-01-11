@@ -12,9 +12,9 @@ export default function LandingPage() {
           <img 
             src="/hero-bg.png" 
             alt="Office Skyline" 
-            className="w-full h-full object-cover opacity-40 mix-blend-overlay"
+            className="w-full h-full object-cover opacity-60 mix-blend-overlay"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#050A18]/90 via-[#050A18]/80 to-[#050A18]" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#050A18]/80 via-[#050A18]/60 to-[#050A18]" />
       </div>
 
       {/* Navbar */}
