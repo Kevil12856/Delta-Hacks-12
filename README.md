@@ -14,6 +14,17 @@
 
 ---
 
+> [!NOTE]
+> **Scope of Project:**
+> This capability demonstration showcases advanced **Agentic AI Engineering** beyond standard LLM wrappers. It implements a non-linear **LangGraph State Machine** to handle complex reasoning loops, **Hybrid Keyword/Vector Retrieval (RAG)** for legal precision, and **Structured Output Validation** to prevent hallucinations.
+> 
+> **Core Competencies Demonstrated:**  
+> • **Agentic Architecture:** Designing deterministic control flows (Routing -> Research -> Synthesis) using LangGraph.  
+> • **Production RAG:** Implementing HNSW indexes on MongoDB Atlas with metadata filtering for 16,000+ documents.  
+> • **Full Stack Integration:** Connecting a Python AI backend (FastAPI) with a Next.js 14 frontend using Server Sent Events (streaming).
+
+---
+
 ## Executive Summary
 **Mike Ross AI** is a state-of-the-art intelligent legal agent designed to democratize access to justice. Built for **Delta Hacks 12** ("Best Use of Gemini"), it leverages advanced Retrieval Augmented Generation (RAG) to provide instant, cited, and actionable legal guidance.
 
